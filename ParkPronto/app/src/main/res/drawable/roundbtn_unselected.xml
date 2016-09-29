@@ -4,5 +4,8 @@
     android:shape="oval">
 
     <solid android:color="@android:color/darker_gray"/>
+    <size android:height="@dimen/letter_shape_hw"
+        android:width="@dimen/letter_shape_hw"></size>
+
 
 </shape>
