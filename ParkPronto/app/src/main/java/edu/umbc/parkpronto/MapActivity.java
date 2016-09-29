@@ -168,9 +168,7 @@ public class MapActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_type_normal) {
+        if (id == R.id.nav_type_normal) {
             boolean success = mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
                     this, R.raw.style_json));
             mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -183,9 +181,7 @@ public class MapActivity extends AppCompatActivity
             mNavigationView.getMenu().findItem(R.id.nav_type_normal).setChecked(false);
             item.setChecked(true);
 
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
+        }  else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
 
