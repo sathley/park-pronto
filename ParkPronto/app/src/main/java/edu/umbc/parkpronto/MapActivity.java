@@ -146,20 +146,4 @@ public class MapActivity extends AppCompatActivity
         }
     }
 
-
-    public void onAClick() {
-
-    }
-
-    public void onBClick() {
-
-    }
-
-    public void onCClick() {
-
-    }
-
-    public void onDClick() {
-
-    }
 }
