@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,13 +28,16 @@ import java.util.Map;
 import edu.umbc.parkpronto.model.ParkingInfoFactory;
 import edu.umbc.parkpronto.model.ParkingPermit;
 import edu.umbc.parkpronto.model.ParkingZone;
+import edu.umbc.parkpronto.util.SharedPrefManager;
 
 public class MapActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback ,View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, View.OnClickListener {
 
     private GoogleMap mMap;
-    private Button mButtonA,mButtonB,mButtonC,mButtonD;
+    private RelativeLayout mButtonA, mButtonB, mButtonC, mButtonD;
+    private Button innerBtnA, innerBtnB, innerBtnC, innerBtnD;
     Map<ParkingPermit, ArrayList<ParkingZone>> data;
+    SharedPrefManager prefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +45,7 @@ public class MapActivity extends AppCompatActivity
         setContentView(R.layout.activity_map);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        prefManager = new SharedPrefManager();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -58,14 +62,48 @@ public class MapActivity extends AppCompatActivity
     }
 
     private void initializeUI() {
-        mButtonA = (Button) findViewById(R.id.input1btn);
-        mButtonB = (Button) findViewById(R.id.input2btn);
-        mButtonC = (Button) findViewById(R.id.input3btn);
-        mButtonD = (Button) findViewById(R.id.input4btn);
+        mButtonA = (RelativeLayout) findViewById(R.id.input1btn);
+        mButtonB = (RelativeLayout) findViewById(R.id.input2btn);
+        mButtonC = (RelativeLayout) findViewById(R.id.input3btn);
+        mButtonD = (RelativeLayout) findViewById(R.id.input4btn);
+
+        innerBtnA = (Button) findViewById(R.id.inner1btn);
+        innerBtnB = (Button) findViewById(R.id.inner2btn);
+        innerBtnC = (Button) findViewById(R.id.inner3btn);
+        innerBtnD = (Button) findViewById(R.id.inner4btn);
+
         mButtonA.setOnClickListener(this);
         mButtonB.setOnClickListener(this);
         mButtonC.setOnClickListener(this);
         mButtonD.setOnClickListener(this);
+        innerBtnA.setOnClickListener(this);
+        innerBtnB.setOnClickListener(this);
+        innerBtnC.setOnClickListener(this);
+        innerBtnD.setOnClickListener(this);
+
+        //Check which preference was set by user
+        if (prefManager.getLastSavedPermit() != null)
+            setLastSavedPreference(prefManager.getLastSavedPermit());
+
+    }
+
+    private void setLastSavedPreference(ParkingPermit lastSavedPermit) {
+              if(lastSavedPermit.equals(ParkingPermit.A))
+              {
+                 toggleButtonA();
+              }else if(lastSavedPermit.equals(ParkingPermit.B))
+              {
+                  toggleButtonB();
+
+              }else if(lastSavedPermit.equals(ParkingPermit.C))
+              {
+                  toggleButtonC();
+
+              } else if(lastSavedPermit.equals(ParkingPermit.D))
+              {
+                  toggleButtonD();
+              }
+
     }
 
     @Override
@@ -115,35 +153,68 @@ public class MapActivity extends AppCompatActivity
 
     @Override
     public void onClick(View v) {
-        switch (v.getId())
-        {
-            case R.id.input1btn :
-                mButtonA.setBackground(getDrawable(R.drawable.roundbtna));
-                mButtonB.setBackground(getDrawable(R.drawable.roundbtn_unselected));
-                mButtonC.setBackground(getDrawable(R.drawable.roundbtn_unselected));
-                mButtonD.setBackground(getDrawable(R.drawable.roundbtn_unselected));
+        switch (v.getId()) {
+            // input1btn -> Outer relative layout
+            // inner1btn -> inner btn layout.
+
+            case R.id.input1btn:
+                toggleButtonA();
+                break;
+            case R.id.input2btn:
+                toggleButtonB();
+                break;
+            case R.id.input3btn:
+                toggleButtonC();
                 break;
 
-            case R.id.input2btn :
-                mButtonA.setBackground(getDrawable(R.drawable.roundbtn_unselected));
-                mButtonB.setBackground(getDrawable(R.drawable.roundbtnb));
-                mButtonC.setBackground(getDrawable(R.drawable.roundbtn_unselected));
-                mButtonD.setBackground(getDrawable(R.drawable.roundbtn_unselected));
-                break;
-            case R.id.input3btn :
-                mButtonA.setBackground(getDrawable(R.drawable.roundbtn_unselected));
-                mButtonB.setBackground(getDrawable(R.drawable.roundbtn_unselected));
-                mButtonC.setBackground(getDrawable(R.drawable.roundbtnc));
-                mButtonD.setBackground(getDrawable(R.drawable.roundbtn_unselected));
+            case R.id.input4btn:
+                toggleButtonD();
                 break;
 
-            case R.id.input4btn :
-                mButtonA.setBackground(getDrawable(R.drawable.roundbtn_unselected));
-                mButtonB.setBackground(getDrawable(R.drawable.roundbtn_unselected));
-                mButtonC.setBackground(getDrawable(R.drawable.roundbtn_unselected));
-                mButtonD.setBackground(getDrawable(R.drawable.roundbtnd));
+            case R.id.inner1btn:
+                toggleButtonA();
                 break;
+
+            case R.id.inner2btn:
+                toggleButtonB();
+                break;
+            case R.id.inner3btn:
+                toggleButtonC();
+                break;
+
+            case R.id.inner4btn:
+                toggleButtonD();
+                break;
+
+
         }
     }
 
+    public void toggleButtonA() {
+        innerBtnA.setBackground(getResources().getDrawable(R.drawable.roundbtna));
+        innerBtnB.setBackground(getResources().getDrawable(R.drawable.roundbtn_unselected));
+        innerBtnC.setBackground(getResources().getDrawable(R.drawable.roundbtn_unselected));
+        innerBtnD.setBackground(getResources().getDrawable(R.drawable.roundbtn_unselected));
+    }
+
+    public void toggleButtonB() {
+        innerBtnA.setBackground(getResources().getDrawable(R.drawable.roundbtn_unselected));
+        innerBtnB.setBackground(getResources().getDrawable(R.drawable.roundbtnb));
+        innerBtnC.setBackground(getResources().getDrawable(R.drawable.roundbtn_unselected));
+        innerBtnD.setBackground(getResources().getDrawable(R.drawable.roundbtn_unselected));
+    }
+
+    public void toggleButtonC() {
+        innerBtnA.setBackground(getResources().getDrawable(R.drawable.roundbtn_unselected));
+        innerBtnB.setBackground(getResources().getDrawable(R.drawable.roundbtn_unselected));
+        innerBtnC.setBackground(getResources().getDrawable(R.drawable.roundbtnc));
+        innerBtnD.setBackground(getResources().getDrawable(R.drawable.roundbtn_unselected));
+    }
+
+    public void toggleButtonD() {
+        innerBtnA.setBackground(getResources().getDrawable(R.drawable.roundbtn_unselected));
+        innerBtnB.setBackground(getResources().getDrawable(R.drawable.roundbtn_unselected));
+        innerBtnC.setBackground(getResources().getDrawable(R.drawable.roundbtn_unselected));
+        innerBtnD.setBackground(getResources().getDrawable(R.drawable.roundbtnd));
+    }
 }

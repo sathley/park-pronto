@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,54 +25,114 @@
         <LinearLayout
             android:id="@+id/topLayoutLL"
             android:layout_width="match_parent"
-            android:gravity="fill"
-            android:clickable="true"
             android:layout_height="?attr/actionBarSize"
             android:background="@android:color/white"
             android:orientation="horizontal"
-            android:layout_weight="4">
+            android:weightSum="4">
 
-            <Button
+            <RelativeLayout
                 android:id="@+id/input1btn"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="A"
-                android:textSize="@dimen/parking_letter_size"
-                android:background="@drawable/roundbtn_unselected"
-                 />
+                android:background="?attr/selectableItemBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
-            <Button
+                <Button
+                    android:id="@+id/inner1btn"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/roundbtn_unselected"
+                    android:text="A"
+                    android:textSize="@dimen/parking_letter_size" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/input2btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="B"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
-                android:textSize="@dimen/parking_letter_size"
-                android:background="@drawable/roundbtn_unselected"/>
+                <Button
+                    android:id="@+id/inner2btn"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/roundbtn_unselected"
+                    android:text="B"
+                    android:textSize="@dimen/parking_letter_size" />
+            </RelativeLayout>
 
-            <Button
+            <RelativeLayout
                 android:id="@+id/input3btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="C"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
+                <Button
 
-                android:layout_weight="1"
-                android:textSize="@dimen/parking_letter_size"
-                android:background="@drawable/roundbtn_unselected"/>
+                    android:id="@+id/inner3btn"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/roundbtn_unselected"
+                    android:text="C"
+                    android:textSize="@dimen/parking_letter_size" />
+            </RelativeLayout>
 
-            <Button
+            <RelativeLayout
                 android:id="@+id/input4btn"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="D"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
-                android:textSize="@dimen/parking_letter_size"
-                android:background="@drawable/roundbtn_unselected"/>
-            />
+                <Button
+
+                    android:id="@+id/inner4btn"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/roundbtn_unselected"
+                    android:text="D"
+                    android:textSize="@dimen/parking_letter_size" />
+            </RelativeLayout>
+
+
+            <!-- <Button
+                 android:id="@+id/input2btn"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="1"
+                 android:background="@drawable/roundbtn_unselected"
+                 android:layout_gravity="center"
+                 android:text="B"
+                 android:textSize="@dimen/parking_letter_size" />
+
+             <Button
+                 android:id="@+id/input3btn"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="1"
+                 android:layout_gravity="center"
+                 android:background="@drawable/roundbtn_unselected"
+                 android:text="C"
+                 android:textSize="@dimen/parking_letter_size" />
+
+             <Button
+                 android:id="@+id/input4btn"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="1"
+                 android:layout_gravity="center"
+                 android:background="@drawable/roundbtn_unselected"
+
+                 android:text="D"
+                 android:textSize="@dimen/parking_letter_size" />
+             />-->
         </LinearLayout>
     </android.support.design.widget.AppBarLayout>
 
