@@ -33,6 +33,7 @@ public class MapActivity extends AppCompatActivity
 
     private GoogleMap mMap;
     private Button mButtonA,mButtonB,mButtonC,mButtonD;
+    Map<ParkingPermit, ArrayList<ParkingZone>> data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,7 @@ public class MapActivity extends AppCompatActivity
 
 
         ParkingInfoFactory factory = new ParkingInfoFactory();
-        Map<ParkingPermit, ArrayList<ParkingZone>> data = factory.getData();
+        data = factory.getData();
         initializeUI();
     }
 
@@ -143,5 +144,22 @@ public class MapActivity extends AppCompatActivity
                 mButtonD.setBackground(getDrawable(R.drawable.roundbtnd));
                 break;
         }
+    }
+
+
+    public void onAClick() {
+
+    }
+
+    public void onBClick() {
+
+    }
+
+    public void onCClick() {
+
+    }
+
+    public void onDClick() {
+
     }
 }
