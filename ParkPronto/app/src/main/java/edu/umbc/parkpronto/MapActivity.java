@@ -20,6 +20,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+import java.util.Map;
+
+import edu.umbc.parkpronto.model.ParkingInfoFactory;
+import edu.umbc.parkpronto.model.ParkingPermit;
+import edu.umbc.parkpronto.model.ParkingZone;
+
 public class MapActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
 
@@ -41,6 +48,10 @@ public class MapActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        ParkingInfoFactory factory = new ParkingInfoFactory();
+        Map<ParkingPermit, ArrayList<ParkingZone>> data = factory.getData();
     }
 
     @Override
