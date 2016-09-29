@@ -9,6 +9,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -42,6 +43,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import edu.umbc.parkpronto.model.MapType;
 import edu.umbc.parkpronto.model.ParkingAvailability;
 import edu.umbc.parkpronto.model.ParkingInfoFactory;
 import edu.umbc.parkpronto.model.ParkingPermit;
@@ -59,8 +61,10 @@ public class MapActivity extends AppCompatActivity
     Map<ParkingPermit, ArrayList<ParkingZone>> data;
     SharedPrefManager prefManager;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_LOCATION = 847;
+    private NavigationView mNavigationView;
     private CoordinatorLayout mCoordinatorLayout;
     private CardView mCardView;
+    private MapType mMapType = MapType.NORMAL;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,8 +86,9 @@ public class MapActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
+
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
         mCardView = (CardView) findViewById(R.id.cv_answer);
         mCardView.setVisibility(View.INVISIBLE);
@@ -159,14 +164,24 @@ public class MapActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_type_normal) {
+            boolean success = mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                    this, R.raw.style_json));
+            mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            mNavigationView.getMenu().findItem(R.id.nav_type_satellite).setChecked(false);
+            item.setChecked(true);
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_type_satellite) {
+
+            mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+            mNavigationView.getMenu().findItem(R.id.nav_type_normal).setChecked(false);
+            item.setChecked(true);
 
         } else if (id == R.id.nav_manage) {
 
@@ -293,10 +308,15 @@ public class MapActivity extends AppCompatActivity
                 Polyline polyline = mMap.addPolyline(new PolylineOptions()
                         .addAll(Arrays.asList(zone.coordinates))
                         .width(24)
-
                         .color(color));
+                int count = polyline.getPoints().size();
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(polyline.getPoints().get(count/2));
+                markerOptions.icon(BitmapDescriptorFactory.fromResource(getBitmapForAvailability(zone.availability)));
+                markerOptions.title(getSnippetForAvailability(zone.availability));
 
-                ;
+                Marker marker = mMap.addMarker(markerOptions);
+                marker.setTag(zone.id);
 
             }
         }

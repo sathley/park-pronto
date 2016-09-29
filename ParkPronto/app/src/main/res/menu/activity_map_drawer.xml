@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="single"
+        >
         <item
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_menu_camera"
+
             android:title="Import" />
         <item
             android:id="@+id/nav_gallery"
@@ -30,6 +32,23 @@
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
                 android:title="Send" />
+        </menu>
+    </item>
+
+    <item android:title="Map Type">
+        <menu>
+            <item
+                android:id="@+id/nav_type_normal"
+                android:checked="true"
+                android:title="Normal">
+
+            </item>
+            <item
+                android:id="@+id/nav_type_satellite"
+                android:checked="false"
+                android:title="Satellite">
+
+            </item>
         </menu>
     </item>
 
