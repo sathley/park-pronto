@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.umbc.parkpronto.R;
+import edu.umbc.parkpronto.util.ParkPronto;
+
 /**
  * Created by sushantathley on 9/28/16.
  */
@@ -147,10 +150,14 @@ public class ParkingInfoFactory {
         mData.put(ParkingPermit.B, B);
         mData.put(ParkingPermit.C, C);
         mData.put(ParkingPermit.D, D);
+
+
     }
 
     public Map<ParkingPermit, ArrayList<ParkingZone>> getData() {
         return mData;
     }
+
+
 
 }

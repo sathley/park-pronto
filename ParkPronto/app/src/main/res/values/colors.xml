@@ -12,4 +12,11 @@
     <color name="colorP">#3a77b1</color>
     <color name="colorZ">#28d242</color>
 
+
+    <color name="colorAWithAlpha">#66FF4081</color>
+    <color name="colorBWithAlpha">#66139f32</color>
+    <color name="colorCWithAlpha">#66f9ce43</color>
+    <color name="colorDWithAlpha">#66a340ff</color>
+
+
 </resources>

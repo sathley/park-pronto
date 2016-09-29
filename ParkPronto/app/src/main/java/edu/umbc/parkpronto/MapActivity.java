@@ -18,15 +18,25 @@ import android.widget.Button;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 import edu.umbc.parkpronto.model.ParkingInfoFactory;
 import edu.umbc.parkpronto.model.ParkingPermit;
+import edu.umbc.parkpronto.model.ParkingType;
 import edu.umbc.parkpronto.model.ParkingZone;
+import edu.umbc.parkpronto.util.ParkPronto;
+import edu.umbc.parkpronto.util.SharedPrefManager;
 
 public class MapActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback ,View.OnClickListener {
@@ -41,6 +51,13 @@ public class MapActivity extends AppCompatActivity
         setContentView(R.layout.activity_map);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        // setup maps
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -106,11 +123,25 @@ public class MapActivity extends AppCompatActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        mMap.setMyLocationEnabled(true);
 
-        // Add a marker in Sydney and move the camera
-        LatLng umbc = new LatLng(39.255858, -76.711184);
-        mMap.addMarker(new MarkerOptions().position(umbc).title("Marker in UMBC"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(umbc));
+        // Zoom to UMBC
+        LatLngBounds umbcBounds = new LatLngBounds(new LatLng(39.250842, -76.724043), new LatLng(39.262102, -76.700987));
+        mMap.setLatLngBoundsForCameraTarget(umbcBounds);
+        LatLng umbcCentre = new LatLng(39.255928, -76.711093);
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(umbcCentre, 15));
+        //mMap.setBuildingsEnabled(true);
+        mMap.setLatLngBoundsForCameraTarget(umbcBounds);
+
+
+        // Get last accessed permit
+        ParkingPermit lastSavedPermit = new SharedPrefManager().getLastSavedPermit();
+
+        // Plot parking zones
+        ArrayList<ParkingZone> zones = data.get(lastSavedPermit);
+        plotZones(lastSavedPermit, zones);
     }
 
     @Override
@@ -144,6 +175,50 @@ public class MapActivity extends AppCompatActivity
                 mButtonD.setBackground(getDrawable(R.drawable.roundbtnd));
                 break;
         }
+    }
+
+    public void plotZones(ParkingPermit permit, ArrayList<ParkingZone> zones) {
+        mMap.clear();
+        int color = getColorForPermit(permit);
+
+        for(ParkingZone zone : zones) {
+            if(zone.type == ParkingType.LOT)
+            {
+                Polygon polygon = mMap.addPolygon(new PolygonOptions()
+                        .addAll(Arrays.asList(zone.coordinates))
+                        .zIndex(10)
+                        .strokeWidth(0)
+                        .strokeColor(color)
+                        .fillColor(color));
+            }
+            else {
+                Polyline polyline = mMap.addPolyline(new PolylineOptions()
+                        .addAll(Arrays.asList(zone.coordinates))
+                        .width(24)
+
+                        .color(color));
+
+                        ;
+
+            }
+        }
+
+    }
+
+
+    private int getColorForPermit(ParkingPermit parkingPermit) {
+        if(parkingPermit == ParkingPermit.A)
+            return getColor(R.color.colorAWithAlpha);
+        if(parkingPermit == ParkingPermit.B)
+            return getColor(R.color.colorBWithAlpha);
+        if(parkingPermit == ParkingPermit.C)
+            return getColor(R.color.colorCWithAlpha);
+        if(parkingPermit == ParkingPermit.D)
+            return getColor(R.color.colorDWithAlpha);
+
+
+        else return R.color.colorPrimary;
+
     }
 
 }
