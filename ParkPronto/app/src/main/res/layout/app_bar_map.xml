@@ -17,14 +17,75 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" >
+            app:popupTheme="@style/AppTheme.PopupOverlay">
 
         </android.support.v7.widget.Toolbar>
 
+        <LinearLayout
+            android:id="@+id/topLayoutLL"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/white"
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <Button
+                android:id="@+id/input1btn"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:text="A"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:textSize="@dimen/parking_letter_size"
+                android:background="@drawable/roundbtn_unselected" />
+
+            <Button
+                android:id="@+id/input2btn"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:layout_height="match_parent"
+                android:text="B"
+                android:textSize="@dimen/parking_letter_size"
+                android:background="@drawable/roundbtn_unselected"/>
+
+            <Button
+                android:id="@+id/input3btn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="C"
+
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:layout_weight="1"
+                android:textSize="@dimen/parking_letter_size"
+                android:background="@drawable/roundbtn_unselected"/>
+
+            <Button
+                android:id="@+id/input4btn"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="D"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:textSize="@dimen/parking_letter_size"
+                android:background="@drawable/roundbtn_unselected"/>
+            />
+        </LinearLayout>
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_map" />
-
-
 
 </android.support.design.widget.CoordinatorLayout>
