@@ -24,49 +24,40 @@
         <LinearLayout
             android:id="@+id/topLayoutLL"
             android:layout_width="match_parent"
-            android:gravity="center"
+            android:gravity="fill"
             android:clickable="true"
             android:layout_height="?attr/actionBarSize"
             android:background="@android:color/white"
             android:orientation="horizontal"
-            android:weightSum="4">
+            android:layout_weight="4">
 
             <Button
                 android:id="@+id/input1btn"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:text="A"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp"
                 android:textSize="@dimen/parking_letter_size"
-                android:background="@drawable/roundbtn_unselected" />
+                android:background="@drawable/roundbtn_unselected"
+                 />
 
             <Button
                 android:id="@+id/input2btn"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp"
-                android:layout_height="match_parent"
                 android:text="B"
+
                 android:textSize="@dimen/parking_letter_size"
                 android:background="@drawable/roundbtn_unselected"/>
 
             <Button
                 android:id="@+id/input3btn"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:text="C"
 
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp"
+
                 android:layout_weight="1"
                 android:textSize="@dimen/parking_letter_size"
                 android:background="@drawable/roundbtn_unselected"/>
@@ -74,13 +65,10 @@
             <Button
                 android:id="@+id/input4btn"
                 android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:text="D"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp"
+
                 android:textSize="@dimen/parking_letter_size"
                 android:background="@drawable/roundbtn_unselected"/>
             />
