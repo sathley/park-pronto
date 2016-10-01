@@ -1,15 +1,14 @@
 package edu.umbc.parkpronto;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -19,7 +18,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.ViewAnimationUtils;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
@@ -65,6 +65,7 @@ public class MapActivity extends AppCompatActivity
     private CoordinatorLayout mCoordinatorLayout;
     private CardView mCardView;
     private MapType mMapType = MapType.NORMAL;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -321,7 +322,8 @@ public class MapActivity extends AppCompatActivity
             @Override
             public boolean onMarkerClick(Marker marker) {
                 String id = (String) marker.getTag();
-                mCardView.setVisibility(View.VISIBLE);
+               // mCardView.setVisibility(View.VISIBLE);
+                showCardView();
                 return false;
 
             }
@@ -333,6 +335,14 @@ public class MapActivity extends AppCompatActivity
                 mCardView.setVisibility(View.INVISIBLE);
             }
         });
+
+    }
+
+    private void showCardView() {
+
+        mCardView.setVisibility(View.VISIBLE);
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.swing_up_left);
+        mCardView.startAnimation(animation);
 
     }
 
