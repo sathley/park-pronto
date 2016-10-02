@@ -3,7 +3,7 @@
     <color name="colorPrimary">#F8B80F</color>
     <color name="colorPrimaryDark">#A2770A</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorA">#FF4081</color>
+    <color name="colorA">#ef1c23</color>
     <color name="colorB">#139f32</color>
     <color name="colorC">#f9ce43</color>
     <color name="colorD">#a340ff</color>
@@ -13,7 +13,7 @@
     <color name="colorZ">#28d242</color>
 
 
-    <color name="colorAWithAlpha">#66FF4081</color>
+    <color name="colorAWithAlpha">#66ef1c23</color>
     <color name="colorBWithAlpha">#66139f32</color>
     <color name="colorCWithAlpha">#66f9ce43</color>
     <color name="colorDWithAlpha">#66a340ff</color>

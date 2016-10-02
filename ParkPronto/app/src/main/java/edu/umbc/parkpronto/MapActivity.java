@@ -73,7 +73,6 @@ public class MapActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         // setup maps
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -182,7 +181,7 @@ public class MapActivity extends AppCompatActivity
             mNavigationView.getMenu().findItem(R.id.nav_type_normal).setChecked(false);
             item.setChecked(true);
 
-        }  else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
 
@@ -195,13 +194,15 @@ public class MapActivity extends AppCompatActivity
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        checkPermission();
         mMap = googleMap;
-        boolean success = mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
                 this, R.raw.style_json));
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-        checkPermission();
-
+        mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setAllGesturesEnabled(true);
+        mMap.getUiSettings().setCompassEnabled(true);
+        mMap.getUiSettings().setMapToolbarEnabled(true);
 
         // Zoom to UMBC
         LatLngBounds umbcBounds = new LatLngBounds(new LatLng(39.250842, -76.724043), new LatLng(39.262102, -76.700987));
@@ -209,7 +210,6 @@ public class MapActivity extends AppCompatActivity
         LatLng umbcCentre = new LatLng(39.255928, -76.711093);
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(umbcCentre, 15));
-        //mMap.setBuildingsEnabled(true);
         mMap.setLatLngBoundsForCameraTarget(umbcBounds);
 
 
@@ -287,14 +287,16 @@ public class MapActivity extends AppCompatActivity
                 Polygon polygon = mMap.addPolygon(new PolygonOptions()
                         .addAll(Arrays.asList(zone.coordinates))
                         .zIndex(10)
-                        .strokeWidth(0)
+                        .strokeWidth(5)
                         .strokeColor(color)
+
                         .fillColor(color));
 
 
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(getPolygonCenterPoint(polygon.getPoints()));
                 markerOptions.icon(BitmapDescriptorFactory.fromResource(getBitmapForAvailability(zone.availability)));
+                markerOptions.snippet(zone.name);
                 markerOptions.title(getSnippetForAvailability(zone.availability));
 
                 Marker marker = mMap.addMarker(markerOptions);
@@ -308,7 +310,7 @@ public class MapActivity extends AppCompatActivity
                         .color(color));
                 int count = polyline.getPoints().size();
                 MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(polyline.getPoints().get(count/2));
+                markerOptions.position(polyline.getPoints().get(count / 2));
                 markerOptions.icon(BitmapDescriptorFactory.fromResource(getBitmapForAvailability(zone.availability)));
                 markerOptions.title(getSnippetForAvailability(zone.availability));
 
@@ -322,7 +324,7 @@ public class MapActivity extends AppCompatActivity
             @Override
             public boolean onMarkerClick(Marker marker) {
                 String id = (String) marker.getTag();
-               // mCardView.setVisibility(View.VISIBLE);
+                // mCardView.setVisibility(View.VISIBLE);
                 showCardView();
                 return false;
 
@@ -476,15 +478,14 @@ public class MapActivity extends AppCompatActivity
         }
     }
 
-    private LatLng getPolygonCenterPoint(List<LatLng> polygonPointsList){
+    private LatLng getPolygonCenterPoint(List<LatLng> polygonPointsList) {
         LatLng centerLatLng = null;
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for(int i = 0 ; i < polygonPointsList.size() ; i++)
-        {
+        for (int i = 0; i < polygonPointsList.size(); i++) {
             builder.include(polygonPointsList.get(i));
         }
         LatLngBounds bounds = builder.build();
-        centerLatLng =  bounds.getCenter();
+        centerLatLng = bounds.getCenter();
 
         return centerLatLng;
     }

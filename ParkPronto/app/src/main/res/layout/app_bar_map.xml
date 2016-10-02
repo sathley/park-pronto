@@ -106,38 +106,6 @@
                     android:textStyle="normal|bold" />
             </RelativeLayout>
 
-
-            <!-- <Button
-                 android:id="@+id/input2btn"
-                 android:layout_width="0dp"
-                 android:layout_height="wrap_content"
-                 android:layout_weight="1"
-                 android:background="@drawable/roundbtn_unselected"
-                 android:layout_gravity="center"
-                 android:text="B"
-                 android:textSize="@dimen/parking_letter_size" />
-
-             <Button
-                 android:id="@+id/input3btn"
-                 android:layout_width="0dp"
-                 android:layout_height="wrap_content"
-                 android:layout_weight="1"
-                 android:layout_gravity="center"
-                 android:background="@drawable/roundbtn_unselected"
-                 android:text="C"
-                 android:textSize="@dimen/parking_letter_size" />
-
-             <Button
-                 android:id="@+id/input4btn"
-                 android:layout_width="0dp"
-                 android:layout_height="wrap_content"
-                 android:layout_weight="1"
-                 android:layout_gravity="center"
-                 android:background="@drawable/roundbtn_unselected"
-
-                 android:text="D"
-                 android:textSize="@dimen/parking_letter_size" />
-             />-->
         </LinearLayout>
     </android.support.design.widget.AppBarLayout>
 
