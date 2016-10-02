@@ -2,9 +2,11 @@ package edu.umbc.parkpronto;
 
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.location.Location;
 import android.os.Bundle;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
@@ -29,6 +31,10 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.formatter.AxisValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -44,6 +50,11 @@ import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.StreetViewPanoramaCamera;
+import com.lyft.lyftbutton.LyftButton;
+import com.lyft.lyftbutton.LyftStyle;
+import com.lyft.lyftbutton.RideParams;
+import com.lyft.lyftbutton.RideTypeEnum;
+import com.lyft.networking.ApiConfig;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -60,7 +71,7 @@ import edu.umbc.parkpronto.model.ParkingZone;
 import edu.umbc.parkpronto.util.SharedPrefManager;
 
 public class MapActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleMap mMap;
     private RelativeLayout mButtonA, mButtonB, mButtonC, mButtonD;
@@ -75,7 +86,10 @@ public class MapActivity extends AppCompatActivity
     private BottomSheetBehavior mBehavior;
     private BarChart[] mCharts = new BarChart[5];
     ParkingInfoFactory factory;
-
+    String currentlySelectedZone = null;
+    GoogleApiClient mGoogleApiClient;
+    Location mLastLocation;
+    LyftButton lyftButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +112,7 @@ public class MapActivity extends AppCompatActivity
         factory = new ParkingInfoFactory();
         //setup charts
         initCharts();
+        setupLyft();
 
         prefManager = new SharedPrefManager();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -116,6 +131,25 @@ public class MapActivity extends AppCompatActivity
         data = factory.getData();
 
         initializeUI();
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
+    }
+
+    private void setupLyft() {
+        ApiConfig apiConfig = new ApiConfig.Builder()
+                .setClientId("s6y4EpyDwuJD")
+                .setClientToken("gAAAAABX8Dv5d8j1YKh44smeoaHIAN3s0y7TdG-g9VnSB9GBrNvOj-Q9tApThghYytI0YZCTvpx4t49OLl1aqI8PYmsQ69zHczcbP81Dc2GcArpUyFDyydt9WqBRJomgh0hv-0oy0oTkxLjIUJPxz-ObS_6tARmHvNwUWShnb_xSkijre2i4hOo=")
+                .build();
+
+        lyftButton = (LyftButton) findViewById(R.id.lyft_button);
+        lyftButton.setApiConfig(apiConfig);
+
+        lyftButton.setLyftStyle(LyftStyle.MULBERRY_DARK);
     }
 
     private void initCharts() {
@@ -126,12 +160,11 @@ public class MapActivity extends AppCompatActivity
         mCharts[4] = (BarChart) findViewById(R.id.chart4);
 
         BarDataSet[] datasets = factory.getUpcomingData(null);
-        for(int i = 0 ; i < datasets.length; i++) {
-            datasets[i].setColor(R.color.colorPrimaryDark);
+        for (int i = 0; i < datasets.length; i++) {
+            datasets[i].setColors(ColorTemplate.LIBERTY_COLORS);
             BarData barData = new BarData(datasets[i]);
             barData.setDrawValues(false);
             barData.setBarWidth(0.9f);
-
 
 
             mCharts[i].setFitBars(false);
@@ -153,10 +186,10 @@ public class MapActivity extends AppCompatActivity
                 @Override
                 public String getFormattedValue(float value, AxisBase axis) {
 
-                    int h = (int)value/4;
+                    int h = (int) value / 4;
                     String ampm = h > 12 ? "PM" : "AM";
-                    h = h>12 ? h-12 : h;
-                    int m = (int)value%4 *15;
+                    h = h > 12 ? h - 12 : h;
+                    int m = (int) value % 4 * 15;
                     return formatter.format(h) + ":" + formatter.format(m) + " " + ampm;
                 }
 
@@ -175,7 +208,7 @@ public class MapActivity extends AppCompatActivity
             yAxis1.setValueFormatter(new AxisValueFormatter() {
                 @Override
                 public String getFormattedValue(float value, AxisBase axis) {
-                    return (int)value + "%";
+                    return (int) value + "%";
                 }
 
                 @Override
@@ -291,7 +324,7 @@ public class MapActivity extends AppCompatActivity
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        checkPermission();
+
         mMap = googleMap;
         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
                 this, R.raw.style_json));
@@ -405,7 +438,7 @@ public class MapActivity extends AppCompatActivity
                 markerOptions.title(getSnippetForAvailability(zone.availability));
 
                 Marker marker = mMap.addMarker(markerOptions);
-                marker.setTag(zone.id);
+                marker.setTag(zone);
 
 
             } else {
@@ -420,7 +453,7 @@ public class MapActivity extends AppCompatActivity
                 markerOptions.title(getSnippetForAvailability(zone.availability));
 
                 Marker marker = mMap.addMarker(markerOptions);
-                marker.setTag(zone.id);
+                marker.setTag(zone);
 
             }
         }
@@ -428,8 +461,19 @@ public class MapActivity extends AppCompatActivity
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                String id = (String) marker.getTag();
+                ParkingZone zone = (ParkingZone) marker.getTag();
+                currentlySelectedZone = zone.id;
                 mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+                RideParams.Builder rideParamsBuilder = new RideParams.Builder()
+                        .setPickupLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude())
+                        .setDropoffLocation(zone.coordinates[0].latitude, zone.coordinates[0].longitude);
+                rideParamsBuilder.setRideTypeEnum(RideTypeEnum.CLASSIC);
+
+                lyftButton.setRideParams(rideParamsBuilder.build());
+                lyftButton.setLyftStyle(LyftStyle.MULBERRY_DARK);
+                lyftButton.load();
+
                 return false;
 
             }
@@ -594,10 +638,11 @@ public class MapActivity extends AppCompatActivity
 
                     break;
                 case BottomSheetBehavior.STATE_EXPANDED:
-                    for(int i = 0; i < mCharts.length; i++) {
+                    for (int i = 0; i < mCharts.length; i++) {
                         mCharts[i].animate();
                     }
                     break;
+
                 default:
 
                     break;
@@ -610,4 +655,32 @@ public class MapActivity extends AppCompatActivity
         }
     };
 
+    @Override
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        checkPermission();
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
 }
