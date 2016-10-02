@@ -1,15 +1,14 @@
 package edu.umbc.parkpronto;
 
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.CardView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,11 +17,18 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.Chart;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.formatter.AxisValueFormatter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -37,7 +43,9 @@ import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.StreetViewPanoramaCamera;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -63,8 +71,11 @@ public class MapActivity extends AppCompatActivity
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_LOCATION = 847;
     private NavigationView mNavigationView;
     private CoordinatorLayout mCoordinatorLayout;
-    private CardView mCardView;
     private MapType mMapType = MapType.NORMAL;
+    private BottomSheetBehavior mBehavior;
+    private BarChart[] mCharts = new BarChart[5];
+    ParkingInfoFactory factory;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +83,21 @@ public class MapActivity extends AppCompatActivity
         setContentView(R.layout.activity_map);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
 
         // setup maps
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        //setup BottomSheet
+        View bottomSheet = mCoordinatorLayout.findViewById(R.id.bottom_sheet);
+        mBehavior = BottomSheetBehavior.from(bottomSheet);
+        mBehavior.setHideable(true);
+        mBehavior.setBottomSheetCallback(bottomSheetCallback);
+        factory = new ParkingInfoFactory();
+        //setup charts
+        initCharts();
 
         prefManager = new SharedPrefManager();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -89,14 +109,91 @@ public class MapActivity extends AppCompatActivity
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
 
-        mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
-        mCardView = (CardView) findViewById(R.id.cv_answer);
-        mCardView.setVisibility(View.INVISIBLE);
 
-        ParkingInfoFactory factory = new ParkingInfoFactory();
+        mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+
         data = factory.getData();
 
         initializeUI();
+    }
+
+    private void initCharts() {
+        mCharts[0] = (BarChart) findViewById(R.id.chart0);
+        mCharts[1] = (BarChart) findViewById(R.id.chart1);
+        mCharts[2] = (BarChart) findViewById(R.id.chart2);
+        mCharts[3] = (BarChart) findViewById(R.id.chart3);
+        mCharts[4] = (BarChart) findViewById(R.id.chart4);
+
+        BarDataSet[] datasets = factory.getUpcomingData(null);
+        for(int i = 0 ; i < datasets.length; i++) {
+            datasets[i].setColor(R.color.colorPrimaryDark);
+            BarData barData = new BarData(datasets[i]);
+            barData.setDrawValues(false);
+            barData.setBarWidth(0.9f);
+
+
+
+            mCharts[i].setFitBars(false);
+            mCharts[i].setDrawValueAboveBar(false);
+            mCharts[i].setDescription("");
+            mCharts[i].setClickable(false);
+            mCharts[i].setPinchZoom(false);
+            mCharts[i].setBackgroundColor(getColor(R.color.cardview_light_background));
+
+            XAxis xAxis = mCharts[i].getXAxis();
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xAxis.setDrawLabels(true);
+            xAxis.setDrawGridLines(false);
+            xAxis.setEnabled(true);
+            xAxis.setDrawAxisLine(true);
+            xAxis.setTypeface(Typeface.DEFAULT_BOLD);
+            final DecimalFormat formatter = new DecimalFormat("00");
+            xAxis.setValueFormatter(new AxisValueFormatter() {
+                @Override
+                public String getFormattedValue(float value, AxisBase axis) {
+
+                    int h = (int)value/4;
+                    String ampm = h > 12 ? "PM" : "AM";
+                    h = h>12 ? h-12 : h;
+                    int m = (int)value%4 *15;
+                    return formatter.format(h) + ":" + formatter.format(m) + " " + ampm;
+                }
+
+                @Override
+                public int getDecimalDigits() {
+                    return 0;
+                }
+            });
+
+
+            YAxis yAxis1 = mCharts[i].getAxisLeft();
+            yAxis1.setDrawGridLines(false);
+            yAxis1.setDrawTopYLabelEntry(true);
+            //yAxis1.setLabelCount(5);
+            yAxis1.setTypeface(Typeface.DEFAULT_BOLD);
+            yAxis1.setValueFormatter(new AxisValueFormatter() {
+                @Override
+                public String getFormattedValue(float value, AxisBase axis) {
+                    return (int)value + "%";
+                }
+
+                @Override
+                public int getDecimalDigits() {
+                    return 0;
+                }
+            });
+
+
+            YAxis yAxis2 = mCharts[i].getAxisRight();
+            //yAxis2.setDrawGridLines(false);
+            //yAxis2.setDrawLabels(false);
+            yAxis2.setEnabled(false);
+
+            mCharts[i].setData(barData);
+        }
+
+
     }
 
     private void initializeUI() {
@@ -228,50 +325,58 @@ public class MapActivity extends AppCompatActivity
             // inner1btn -> inner btn layout.
 
             case R.id.input1btn:
+                mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 toggleButtonA();
                 break;
             case R.id.input2btn:
+                mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 toggleButtonB();
                 break;
             case R.id.input3btn:
+                mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 toggleButtonC();
                 break;
 
             case R.id.input4btn:
+                mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 toggleButtonD();
                 break;
 
             case R.id.inner1btn:
+                mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 toggleButtonA();
                 break;
 
             case R.id.inner2btn:
+                mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 toggleButtonB();
                 break;
             case R.id.inner3btn:
+                mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 toggleButtonC();
                 break;
 
             case R.id.inner4btn:
+                mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 toggleButtonD();
                 break;
 
             // answer buttons
 
             case R.id.btn_0:
-                mCardView.setVisibility(View.INVISIBLE);
+                mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 break;
 
             case R.id.btn_1:
-                mCardView.setVisibility(View.INVISIBLE);
+                mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 break;
 
             case R.id.btn_2:
-                mCardView.setVisibility(View.INVISIBLE);
+                mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 break;
 
             case R.id.btn_3:
-                mCardView.setVisibility(View.INVISIBLE);
+                mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 break;
 
 
@@ -324,8 +429,7 @@ public class MapActivity extends AppCompatActivity
             @Override
             public boolean onMarkerClick(Marker marker) {
                 String id = (String) marker.getTag();
-                // mCardView.setVisibility(View.VISIBLE);
-                showCardView();
+                mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 return false;
 
             }
@@ -334,17 +438,9 @@ public class MapActivity extends AppCompatActivity
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                mCardView.setVisibility(View.INVISIBLE);
+                mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             }
         });
-
-    }
-
-    private void showCardView() {
-
-        mCardView.setVisibility(View.VISIBLE);
-        Animation animation = AnimationUtils.loadAnimation(this, R.anim.swing_up_left);
-        mCardView.startAnimation(animation);
 
     }
 
@@ -490,5 +586,28 @@ public class MapActivity extends AppCompatActivity
         return centerLatLng;
     }
 
+    private BottomSheetBehavior.BottomSheetCallback bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
+        @Override
+        public void onStateChanged(@NonNull View bottomSheet, int newState) {
+            switch (newState) {
+                case BottomSheetBehavior.STATE_HIDDEN:
+
+                    break;
+                case BottomSheetBehavior.STATE_EXPANDED:
+                    for(int i = 0; i < mCharts.length; i++) {
+                        mCharts[i].animate();
+                    }
+                    break;
+                default:
+
+                    break;
+            }
+        }
+
+        @Override
+        public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+        }
+    };
 
 }

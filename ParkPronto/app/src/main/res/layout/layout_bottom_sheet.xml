@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/app_bar"
+    android:layout_gravity="bottom"
+    android:background="@android:color/background_light"
+    android:elevation="@dimen/design_bottom_sheet_modal_elevation"
+    app:behavior_peekHeight="120dp"
+    app:layout_behavior="@string/bottom_sheet_behavior">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_answer"
+            android:layout_width="match_parent"
+            android:layout_height="88dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="?android:attr/selectableItemBackground">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp">
+
+
+                    <Button
+                        android:id="@+id/btn_0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/holo_red_dark"
+                        android:text="FULL"
+                        android:textColor="@android:color/white"
+                        android:textStyle="normal|bold" />
+
+                    <Button
+                        android:id="@+id/btn_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/holo_orange_dark"
+                        android:text="1-5"
+                        android:textColor="@android:color/white"
+                        android:textStyle="normal|bold" />
+
+                    <Button
+                        android:id="@+id/btn_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/holo_green_light"
+                        android:text="5-10"
+                        android:textColor="@android:color/white"
+                        android:textStyle="normal|bold" />
+
+                    <Button
+                        android:id="@+id/btn_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/holo_green_dark"
+                        android:text="10+"
+                        android:textColor="@android:color/white"
+                        android:textStyle="normal|bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Help improve Park Pronto. Tell us how many spots are vacant at this location."
+                    android:textSize="10sp"
+                    android:textStyle="normal|italic" />
+
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_charts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/cv_answer"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:background="?android:attr/selectableItemBackground">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_label_charts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginBottom="28dp"
+
+                    android:text="UPCOMING WEEK"
+                    android:textStyle="normal|bold"
+                    android:textSize="16sp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="16dp" />
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_label_charts"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp">
+
+
+                        <TextView
+                            android:id="@+id/tv_chart_label0"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:text="MONDAY"
+                            android:textSize="14sp"
+                            android:textStyle="normal|bold" />
+
+
+                        <com.github.mikephil.charting.charts.BarChart
+                            android:id="@+id/chart0"
+                            android:layout_width="match_parent"
+                            android:layout_height="148dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/tv_chart_label0" />
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp">
+
+
+                        <TextView
+                            android:id="@+id/tv_chart_label1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="TUESDAY"
+                            android:textSize="14sp"
+                            android:layout_marginLeft="16dp"
+                            android:textStyle="normal|bold" />
+
+
+                        <com.github.mikephil.charting.charts.BarChart
+                            android:id="@+id/chart1"
+                            android:layout_width="match_parent"
+                            android:layout_height="148dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/tv_chart_label1" />
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp">
+
+
+                        <TextView
+                            android:id="@+id/tv_chart_label2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="WEDNESDAY"
+                            android:textSize="14sp"
+                            android:layout_marginLeft="16dp"
+                            android:textStyle="normal|bold" />
+
+
+                        <com.github.mikephil.charting.charts.BarChart
+                            android:id="@+id/chart2"
+                            android:layout_width="match_parent"
+                            android:layout_height="148dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/tv_chart_label2" />
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp">
+
+
+                        <TextView
+                            android:id="@+id/tv_chart_label3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="THURSDAY"
+                            android:textSize="14sp"
+                            android:layout_marginLeft="16dp"
+                            android:textStyle="normal|bold" />
+
+
+                        <com.github.mikephil.charting.charts.BarChart
+                            android:id="@+id/chart3"
+                            android:layout_width="match_parent"
+                            android:layout_height="148dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/tv_chart_label3" />
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp">
+
+
+                        <TextView
+                            android:id="@+id/tv_chart_label4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="FRIDAY"
+                            android:textSize="14sp"
+                            android:layout_marginLeft="16dp"
+                            android:textStyle="normal|bold" />
+
+
+                        <com.github.mikephil.charting.charts.BarChart
+                            android:id="@+id/chart4"
+                            android:layout_width="match_parent"
+                            android:layout_height="148dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/tv_chart_label4" />
+
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+    </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>

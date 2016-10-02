@@ -1,5 +1,9 @@
 package edu.umbc.parkpronto.model;
 
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -369,6 +373,52 @@ public class ParkingInfoFactory {
 
     public Map<ParkingPermit, ArrayList<ParkingZone>> getData() {
         return mData;
+    }
+
+
+    public BarDataSet[] getUpcomingData(String parkingZoneId)
+    {   int[] mon = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 5, 10, 10, 10, 20, 20, 20, 20, 40, 50, 60, 65, 65, 70, 70, 90, 95, 90, 90, 100, 100, 100, 100,
+            90, 90, 100, 100, 100, 100, 100, 100, 100, 100, 95, 95, 90, 80, 70, 60, 30, 20, 10, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+        int[] tue = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 5, 10, 10, 10, 20, 20, 20, 20, 40, 50, 60, 65, 65, 70, 70, 90, 95, 90, 90, 100, 100, 100, 100,
+                90, 90, 100, 100, 100, 100, 100, 100, 100, 100, 95, 95, 90, 80, 70, 60, 30, 20, 10, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+        int[] wed = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 5, 10, 10, 10, 20, 20, 20, 20, 40, 50, 60, 65, 65, 70, 70, 90, 95, 90, 90, 100, 100, 100, 100,
+                90, 90, 100, 100, 100, 100, 100, 100, 100, 100, 95, 95, 90, 80, 70, 60, 30, 20, 10, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+        int[] thu = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 5, 10, 10, 10, 20, 20, 20, 20, 40, 50, 60, 65, 65, 70, 70, 90, 95, 90, 90, 100, 100, 100, 100,
+                90, 90, 100, 100, 100, 100, 100, 100, 100, 100, 95, 95, 90, 80, 70, 60, 30, 20, 10, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+        int[] fri = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 5, 10, 10, 10, 20, 20, 20, 20, 40, 50, 60, 65, 65, 70, 70, 90, 95, 90, 90, 100, 100, 100, 100,
+                90, 90, 100, 100, 100, 100, 100, 100, 100, 100, 95, 95, 90, 80, 70, 60, 30, 20, 10, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+
+        List<BarEntry> monday = new ArrayList<BarEntry>();
+        List<BarEntry> tuesday = new ArrayList<BarEntry>();
+        List<BarEntry> wednesday = new ArrayList<BarEntry>();
+        List<BarEntry> friday = new ArrayList<BarEntry>();
+        List<BarEntry> thursday = new ArrayList<BarEntry>();
+        for(int i = 0; i < 24*4 ; i++)
+        {
+
+            monday.add(new BarEntry(i, mon[i]));
+            tuesday.add(new BarEntry(i, tue[i]));
+            wednesday.add(new BarEntry(i, wed[i]));
+            thursday.add(new BarEntry(i, thu[i]));
+            friday.add(new BarEntry(i, fri[i]));
+        }
+        return new BarDataSet[] {new BarDataSet(monday, "MON"), new BarDataSet(tuesday, "TUE"), new BarDataSet(wednesday, "wed"), new BarDataSet(thursday, "THU"), new BarDataSet(friday, "FRI"), };
+
     }
 
 
