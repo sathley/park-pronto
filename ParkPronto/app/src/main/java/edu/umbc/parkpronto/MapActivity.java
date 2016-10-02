@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -131,6 +132,7 @@ public class MapActivity extends AppCompatActivity
         data = factory.getData();
 
         initializeUI();
+        checkPermission();
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -329,6 +331,7 @@ public class MapActivity extends AppCompatActivity
         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
                 this, R.raw.style_json));
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        checkPermission();
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setAllGesturesEnabled(true);
         mMap.getUiSettings().setCompassEnabled(true);
@@ -398,18 +401,22 @@ public class MapActivity extends AppCompatActivity
 
             case R.id.btn_0:
                 mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                Snackbar.make(mCoordinatorLayout, "Thank you for your feedback.", Snackbar.LENGTH_SHORT).show();
                 break;
 
             case R.id.btn_1:
                 mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                Snackbar.make(mCoordinatorLayout, "Thank you for your feedback.", Snackbar.LENGTH_SHORT).show();
                 break;
 
             case R.id.btn_2:
                 mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                Snackbar.make(mCoordinatorLayout, "Thank you for your feedback.", Snackbar.LENGTH_SHORT).show();
                 break;
 
             case R.id.btn_3:
                 mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                Snackbar.make(mCoordinatorLayout, "Thank you for your feedback.", Snackbar.LENGTH_SHORT).show();
                 break;
 
 

@@ -9,7 +9,7 @@
     android:layout_gravity="bottom"
     android:background="@android:color/background_light"
     android:elevation="@dimen/design_bottom_sheet_modal_elevation"
-    app:behavior_peekHeight="120dp"
+    app:behavior_peekHeight="136dp"
     app:layout_behavior="@string/bottom_sheet_behavior">
 
     <RelativeLayout
@@ -23,6 +23,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:layout_marginTop="2dp"
             android:background="?android:attr/selectableItemBackground">
 
             <RelativeLayout

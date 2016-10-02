@@ -108,7 +108,7 @@ public class ParkingInfoFactory {
         A.add(zone);
 
         zone = new ParkingZone("A8", "LOT 1", ParkingPermit.A, ParkingType.LOT);
-        zone.availability = ParkingAvailability.GREATER_THAN_TEN;
+        zone.availability = ParkingAvailability.FIVE_TO_TEN;
         zone.coordinates = new LatLng[]{
                 new LatLng(39.253960, -76.708383),
                 new LatLng(39.253580, -76.707782),
@@ -162,7 +162,7 @@ public class ParkingInfoFactory {
         D.add(zone);
 
         zone = new ParkingZone("D2", "LOT 24", ParkingPermit.D, ParkingType.LOT);
-        zone.availability = ParkingAvailability.GREATER_THAN_TEN;
+        zone.availability = ParkingAvailability.FIVE_TO_TEN;
         zone.coordinates = new LatLng[]{
                 new LatLng(39.254657, -76.704360),
                 new LatLng(39.254259, -76.704789),
@@ -324,7 +324,7 @@ public class ParkingInfoFactory {
 
             obj = new JSONObject("{ \"snappedPoints\": [ { \"location\": { \"latitude\": 39.253887013282629, \"longitude\": -76.708906503210542 }, \"originalIndex\": 0, \"placeId\": \"ChIJ8QzExrUdyIkRwPVy49LtZEM\" }, { \"location\": { \"latitude\": 39.2540243, \"longitude\": -76.7086526 }, \"placeId\": \"ChIJ8QzExrUdyIkRwPVy49LtZEM\" }, { \"location\": { \"latitude\": 39.254193799999996, \"longitude\": -76.7083791 }, \"placeId\": \"ChIJ8QzExrUdyIkRwPVy49LtZEM\" }, { \"location\": { \"latitude\": 39.2542234, \"longitude\": -76.7083379 }, \"placeId\": \"ChIJ8QzExrUdyIkRwPVy49LtZEM\" }, { \"location\": { \"latitude\": 39.2542234, \"longitude\": -76.7083379 }, \"placeId\": \"ChIJu5ast7UdyIkRNs0T51m_RHs\" }, { \"location\": { \"latitude\": 39.2543857, \"longitude\": -76.7081118 }, \"placeId\": \"ChIJu5ast7UdyIkRNs0T51m_RHs\" }, { \"location\": { \"latitude\": 39.2543857, \"longitude\": -76.7081118 }, \"placeId\": \"ChIJzx_ms7UdyIkRsWC-JbcfG5c\" }, { \"location\": { \"latitude\": 39.254547728015254, \"longitude\": -76.7079436099491 }, \"originalIndex\": 1, \"placeId\": \"ChIJzx_ms7UdyIkRsWC-JbcfG5c\" } ] }");
             zone = new ParkingZone("D5", "", ParkingPermit.D, ParkingType.STREET);
-            zone.availability = ParkingAvailability.GREATER_THAN_TEN;
+            zone.availability = ParkingAvailability.FULL;
             arr = obj.getJSONArray("snappedPoints");
             zone.coordinates = new LatLng[arr.length()];
             for (int i = 0; i < arr.length(); i++) {
@@ -334,7 +334,7 @@ public class ParkingInfoFactory {
 
             obj = new JSONObject("{ \"snappedPoints\": [ { \"location\": { \"latitude\": 39.253120288575957, \"longitude\": -76.714859226775786 }, \"originalIndex\": 0, \"placeId\": \"ChIJ7c8qX8kdyIkRnIdFJXoWjh4\" }, { \"location\": { \"latitude\": 39.25333659999999, \"longitude\": -76.7150267 }, \"placeId\": \"ChIJ7c8qX8kdyIkRnIdFJXoWjh4\" }, { \"location\": { \"latitude\": 39.2537401, \"longitude\": -76.7153295 }, \"placeId\": \"ChIJ7c8qX8kdyIkRnIdFJXoWjh4\" }, { \"location\": { \"latitude\": 39.2541021, \"longitude\": -76.715595999999991 }, \"placeId\": \"ChIJ7c8qX8kdyIkRnIdFJXoWjh4\" }, { \"location\": { \"latitude\": 39.2541021, \"longitude\": -76.715595999999991 }, \"placeId\": \"ChIJEyCW8MsdyIkR-JX-OWvTqCo\" }, { \"location\": { \"latitude\": 39.2542647, \"longitude\": -76.715729799999991 }, \"placeId\": \"ChIJEyCW8MsdyIkR-JX-OWvTqCo\" }, { \"location\": { \"latitude\": 39.2546678, \"longitude\": -76.7160342 }, \"placeId\": \"ChIJEyCW8MsdyIkR-JX-OWvTqCo\" }, { \"location\": { \"latitude\": 39.2548445, \"longitude\": -76.7161655 }, \"placeId\": \"ChIJEyCW8MsdyIkR-JX-OWvTqCo\" }, { \"location\": { \"latitude\": 39.2548445, \"longitude\": -76.7161655 }, \"placeId\": \"ChIJc96hdcwdyIkRT3Duq0XsWbE\" }, { \"location\": { \"latitude\": 39.2549857, \"longitude\": -76.716278899999992 }, \"placeId\": \"ChIJc96hdcwdyIkRT3Duq0XsWbE\" }, { \"location\": { \"latitude\": 39.2551455, \"longitude\": -76.716390199999992 }, \"placeId\": \"ChIJc96hdcwdyIkRT3Duq0XsWbE\" }, { \"location\": { \"latitude\": 39.2552265, \"longitude\": -76.716436 }, \"placeId\": \"ChIJc96hdcwdyIkRT3Duq0XsWbE\" }, { \"location\": { \"latitude\": 39.255337399999995, \"longitude\": -76.716484400000013 }, \"placeId\": \"ChIJc96hdcwdyIkRT3Duq0XsWbE\" }, { \"location\": { \"latitude\": 39.255529599999996, \"longitude\": -76.7165406 }, \"placeId\": \"ChIJc96hdcwdyIkRT3Duq0XsWbE\" }, { \"location\": { \"latitude\": 39.255677399999989, \"longitude\": -76.7165634 }, \"placeId\": \"ChIJc96hdcwdyIkRT3Duq0XsWbE\" }, { \"location\": { \"latitude\": 39.255706209039154, \"longitude\": -76.716560460898961 }, \"originalIndex\": 1, \"placeId\": \"ChIJc96hdcwdyIkRT3Duq0XsWbE\" } ] }");
             zone = new ParkingZone("D7", "", ParkingPermit.D, ParkingType.STREET);
-            zone.availability = ParkingAvailability.GREATER_THAN_TEN;
+            zone.availability = ParkingAvailability.LESS_THAN_FIVE;
             arr = obj.getJSONArray("snappedPoints");
             zone.coordinates = new LatLng[arr.length()];
             for (int i = 0; i < arr.length(); i++) {
@@ -405,14 +405,23 @@ public class ParkingInfoFactory {
         List<BarEntry> wednesday = new ArrayList<BarEntry>();
         List<BarEntry> friday = new ArrayList<BarEntry>();
         List<BarEntry> thursday = new ArrayList<BarEntry>();
+
+        int[] mondayColors = new int[24*4];
+        int[] tuesdayColors = new int[24*4];
+        int[] thursdayColors = new int[24*4];
+        int[] fridayColors = new int[24*4];
+        int[] wednesdayColors = new int[24*4];
+
         for(int i = 0; i < 24*4 ; i++)
         {
             monday.add(new BarEntry(i, mon[i]));
+
             tuesday.add(new BarEntry(i, tue[i]));
             wednesday.add(new BarEntry(i, wed[i]));
             thursday.add(new BarEntry(i, thu[i]));
             friday.add(new BarEntry(i, fri[i]));
         }
+
         return new BarDataSet[] {new BarDataSet(monday, "MON"), new BarDataSet(tuesday, "TUE"), new BarDataSet(wednesday, "wed"), new BarDataSet(thursday, "THU"), new BarDataSet(friday, "FRI"), };
 
     }
